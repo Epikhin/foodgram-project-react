@@ -1,12 +1,15 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 
 
 User = get_user_model()
 
 
 class Ingredient(models.Model):
+    """Модель ингредиентов для рецептов"""
+
     name = models.CharField(
         verbose_name='Название ингредиента',
         max_length=200,
@@ -24,7 +27,15 @@ class Ingredient(models.Model):
         return self.name
 
 
+def validate_color_length(value):
+    if not (len(value) == 7 and value.startswith('#')):
+        raise ValidationError(
+            'Цвет должен быть в формате "#RRGGBB" и иметь длину 7 символов.')
+
+
 class Tag(models.Model):
+    """Модель тэгов для рецептов"""
+
     name = models.CharField(
         verbose_name='Название тэга',
         max_length=200,
@@ -32,6 +43,7 @@ class Tag(models.Model):
     color = models.CharField(
         verbose_name='Цвет тэга',
         max_length=7,
+        validators=[validate_color_length],
     )
     slug = models.SlugField(
         verbose_name='Слаг тэга',
@@ -48,6 +60,8 @@ class Tag(models.Model):
 
 
 class Recipe(models.Model):
+    """Модель рецепта"""
+
     name = models.CharField(
         verbose_name='Название рецепта',
         max_length=200,
@@ -82,7 +96,10 @@ class Recipe(models.Model):
         validators=[
             MinValueValidator(
                 1, message='Минимальное значение - 1 минута'
-                ),
+            ),
+            MaxValueValidator(
+                812, message='Максимальное значение - 812 минут'
+            ),
         ],
     )
     pub_date = models.DateTimeField(
@@ -100,6 +117,7 @@ class Recipe(models.Model):
 
 
 class IngredientInRecipe(models.Model):
+    """Модель для связи ингредиентов и рецептов"""
 
     recipe = models.ForeignKey(
         Recipe,
@@ -118,7 +136,7 @@ class IngredientInRecipe(models.Model):
         validators=[
             MinValueValidator(
                 1, message='Минимальное количество - 1'
-                ),
+            ),
         ],
     )
 
@@ -133,6 +151,7 @@ class IngredientInRecipe(models.Model):
 
 
 class Favorite(models.Model):
+    """Модель для избранных рецептов"""
 
     user = models.ForeignKey(
         User,
@@ -162,6 +181,8 @@ class Favorite(models.Model):
 
 
 class ShoppingCart(models.Model):
+    """Модель для списка покупок"""
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

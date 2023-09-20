@@ -25,20 +25,16 @@ class CustomUserViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def perform_create(self, serializer):
-        if (
-            isinstance(serializer, CustomUserSerializer) and
-            "password" in self.request.data
-        ):
+        if (isinstance(serializer, CustomUserSerializer)
+                and "password" in self.request.data):
             password = make_password(self.request.data["password"])
             serializer.save(password=password)
         else:
             serializer.save()
 
     def perform_update(self, serializer):
-        if (
-            isinstance(serializer, CustomUserSerializer) and
-            "password" in self.request.data
-        ):
+        if (isinstance(serializer, CustomUserSerializer)
+                and "password" in self.request.data):
             password = make_password(self.request.data["password"])
             serializer.save(password=password)
         else:
