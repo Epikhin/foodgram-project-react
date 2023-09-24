@@ -55,7 +55,6 @@ sudo docker compose exec backend python manage.py import_ingredients
 sudo docker compose exec backend python manage.py add_tags
 ```
 Для админ-зоны:
-Логин: ```admin```
-Пароль: ```a```
+Логин: ```admin```,Пароль: ```a```
 ### Автор backend'a
 Епихин Александр (о)_(о)
