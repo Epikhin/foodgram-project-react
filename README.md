@@ -32,3 +32,30 @@ POSTGRES_PASSWORD       # mysecretpassword
 DB_HOST                 # db
 DB_PORT                 # 5432 (порт по умолчанию)
 ```
+Создать и запустить контейнеры Docker, выполнить команду на сервере:
+```
+sudo docker compose up -d
+```
+Выполнить миграции:
+```
+sudo docker compose exec backend python manage.py makemigrations
+sudo docker compose exec backend python manage.py migrate
+```
+Создать суперпользователя:
+```
+sudo docker compose exec backend python manage.py createsuperuser
+```
+Скопировать статику:
+```
+sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/static/. /backend_static/static/
+```
+Наполнить базу данных ингредиентами и тэгами:
+```
+sudo docker compose exec backend python manage.py import_ingredients
+sudo docker compose exec backend python manage.py add_tags
+```
+Для админ-зоны:
+Логин: admin
+Пароль: a
+### Автор backend'a
+Епихин Александр
