@@ -58,4 +58,4 @@ sudo docker compose exec backend python manage.py add_tags
 Логин: admin
 Пароль: a
 ### Автор backend'a
-Епихин Александр
+Епихин Александр (о)_(о)
