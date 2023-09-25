@@ -20,7 +20,9 @@ from .pagination import CustomPagination
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    queryset = Recipe.objects.select_related('author').all()
+    queryset = Recipe.objects.select_related(
+        'author').prefetch_related(
+            'ingredients_in_recipe', 'favorites', 'shopping_cart').all()
     pagination_class = CustomPagination
     permission_classes = (IsAuthorOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
