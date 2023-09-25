@@ -30,12 +30,16 @@ class RecipeAdmin(admin.ModelAdmin):
                     'name',
                     'author',
                     'text',
-                    'cooking_time',)
+                    'cooking_time',
+                    'favorites_count')
     fields = ('name', 'text', 'author', 'image', 'tags', 'cooking_time')
     search_fields = ('name', 'subscribing__username')
     list_filter = ('author', 'tags')
     empty_value_display = '-пусто-'
     inlines = [IngredientInline]
+
+    def favorites_count(self, obj):
+        return obj.favorites.count()
 
 
 @admin.register(IngredientInRecipe)
