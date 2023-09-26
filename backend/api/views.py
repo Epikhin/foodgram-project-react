@@ -6,15 +6,15 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from rest_framework.permissions import (IsAuthenticated, SAFE_METHODS,
+                                        IsAuthenticatedOrReadOnly)
 from django_filters.rest_framework import DjangoFilterBackend
 from recipes.models import Recipe, Ingredient, Tag, Favorite, ShoppingCart
 from .serializers import (FavoriteSerializer, IngredientSerializer,
                           TagSerializer,
                           RecipeOnlyReadSerializer, ShoppingCartSerializer,
                           RecipeWriteSerializer)
-from .permissions import (IsAdminOrReadOnly, IsAuthorOrReadOnly,
-                          IsAuthenticatedOrReadOnly)
+from .permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
 
 from .filters import IngredientFilter, RecipeFilter
 from .pagination import CustomPagination
