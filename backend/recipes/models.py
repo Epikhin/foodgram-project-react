@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 from .validators import validate_color_length
 
-
 User = get_user_model()
 
 
